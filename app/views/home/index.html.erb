@@ -15,15 +15,21 @@ $(document).ready(function() {
 	  // Labels for the ykeys -- will be displayed when you hover over the
 	  // chart.
 	  labels: ['Valor UF','Valor gramo de Oro','Valor USD'],
-          lineColors:['green','blue', '#000000']
+          lineColors:['green','#cca300', '#ff471a']
+	}).on('click', function(i, row){
+	  alert(js[i]['date_v']);
 	});
 });
 	
 </script>
 </head>
-<h1>asd</h1>
+<h1>Calculadora Historica</h1>
 
+<div>
+	<%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
+	  <%= select_year(@y.to_i, {:start_year => DateTime.now.year,:end_year => DateTime.now.year - 34, prefix: 'year_selected'}) %>
+	  <%= submit_tag 'Mostrar año', name: nil %>
+	<% end %>
+	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
+</div>
 <%= content_tag :div, "", id: "temp_data", data: {temp: @ufs} %>
-
-<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
-

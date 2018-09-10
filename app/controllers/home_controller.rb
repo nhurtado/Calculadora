@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
   def index
-    @ufs = DateValue.where('extract(year from date_v) = ?', 1984).where('extract(month from date_v) = ?', 10).to_json
+    @y = 2018
+    if params[:year_selected].present?
+      @y = params[:year_selected][:year]
+    end
+    @ufs = DateValue.where('extract(year from date_v) = ?', @y).to_json
   end
 end
