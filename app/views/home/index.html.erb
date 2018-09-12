@@ -1,7 +1,11 @@
 <head>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <script>
 $(document).ready(function() {
-  var js = <%= raw @ufs %>;
+  var js = <%= raw @uf_values %>;
   new Morris.Line({
 	  // ID of the element in which to draw the chart.
 	  element: 'myfirstchart',
@@ -24,12 +28,78 @@ $(document).ready(function() {
 </script>
 </head>
 <h1>Calculadora Historica</h1>
-
-<div>
-	<%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
-	  <%= select_year(@y.to_i, {:start_year => DateTime.now.year,:end_year => DateTime.now.year - 34, prefix: 'year_selected'}) %>
-	  <%= submit_tag 'Mostrar año', name: nil %>
+<%= flash[:warning] || flash[:notice] || flash[:alert] %>
+<div style="margin-top: 30px; margin-left: 20px; margin-right: 400px; overflow: hidden; border-style: solid;
+    border-width: 2px; ">
+    <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
+    <% if params[:year] %>
+      <%= hidden_field_tag 'year', @y %>
+    <% end %>
+    <div style="margin-top: 10px; margin-left: 10px; margin-bottom: 10px; width: 200px; float:left;">
+        <label for="start">Cantidad</label>
+	<% if @q %>
+	  <input type="number" id="quantity" name="quantity" value="<%= @q %>"
+           min="0" style="width: 100px;" required step="0.01"/>
+	<% else %>
+	  <input type="number" id="quantity" name="quantity"
+           min="0" style="width: 100px;" required step="0.01"/>
 	<% end %>
-	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
+	<%= select_tag(:option, options_for_select([['CLP', 1], ['UF', 2], ['USD', 3], ['Oro (gr)', 4]], @o)) %>
+    </div>
+    <div style="margin-top: 10px; margin-bottom: 10px; width: 150px; float: left;">
+        <label for="start">Fecha Inicio</label>
+	<input type="date" id="start" name="start" value= "<%= @sd %>" min="1984-01-01" max="<%= @today %>" />
+    </div>
+
+    <div style="margin-top: 10px; margin-bottom: 10px; width: 150px; float: left;">
+        <label for="target">Fecha Objetivo</label>
+	<input type="date" id="target" name="target" value="<%= @td %>" min="1984-01-01" max="<%= @today %>"/ >
+    </div>
+    <div style="margin-top: 10px; margin-bottom: 10px; width: 100px; float: left;">
+	<label for="submit">_</label>
+    	<%= submit_tag 'Calcular', name: nil %>
+    </div>
+    <% end %>
+    <% if @target_clp %>
+      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
+	  <b>CLP</b> <%= @target_clp %>
+      </div>
+    <% end %>
+    <% if @ufs %>
+      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
+	  <b>UF</b> <%= @ufs %>
+      </div>
+    <% end %>
+    <% if @target_usd %>
+      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
+	  <b>USD</b> <%= @target_usd %>
+      </div>
+    <% end %>
+    <% if @target_gold %>
+      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
+	  <b>Oro (gr)</b> <%= @target_gold %>
+      </div>
+    <% end %>
 </div>
-<%= content_tag :div, "", id: "temp_data", data: {temp: @ufs} %>
+<div style="margin-top: 30px; margin-left: 20px; margin-right: 200px; overflow: hidden; border-style: solid;
+    border-width: 2px;">
+	<div align="right" style="margin-top: 30px;">
+	  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
+	    <% if params[:quantity] && params[:start] && params[:target] %>
+	      <%= hidden_field_tag 'quantity', @q %>
+	      <%= hidden_field_tag 'start', @sd %>
+	      <%= hidden_field_tag 'target', @td %>
+	      <%= hidden_field_tag 'option', @o %>
+	    <% end %>
+	    <%= select_tag(:year, options_for_select(@dates_array, @y)) %>
+	    <%= submit_tag 'Mostrar año', name: nil %>
+	  <% end %>
+	</div>
+	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
+	
+</div>
+
+
+
+
+<%= content_tag :div, "", id: "temp_data", data: {temp: @uf_values} %>
