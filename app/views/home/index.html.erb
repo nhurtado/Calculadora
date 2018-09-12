@@ -44,7 +44,7 @@ $(document).ready(function() {
 <section style="margin-top: 40px">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 col-sm-8">
+      <div class="col-md-4 col-sm-6">
         <div class="widget">
           <div class="panel panel-primary">
             <div class="panel-heading">Calculadora</div>
@@ -78,7 +78,7 @@ $(document).ready(function() {
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-3 col-sm-4">
         <div class="widget">
         	<% if @target_clp && @ufs &&  @target_usd%>
 	            <div class="panel panel-primary">
@@ -115,7 +115,7 @@ $(document).ready(function() {
   </div>
 </section>
 <div class="col-md-10 col-sm-14 col-md-offset-1">
-	<div style="overflow: hidden; background-color: #ffffff;" class="panel panel-primary">
+	<div style="overflow: auto; background-color: #ffffff;" class="panel panel-primary">
 	<div class="panel-heading">Inflación en el año <%= @y %></div>
 	<div align="right" style="margin-top: 30px; margin-right: 100px;">
 	  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
