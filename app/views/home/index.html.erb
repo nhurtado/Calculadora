@@ -1,4 +1,4 @@
-<head>
+
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -26,12 +26,10 @@ $(document).ready(function() {
 });
 	
 </script>
-<body style="background-color:#e6f2ff;">
-
-</body>
-</head>
+<body style="background-color:#e6f2ff;"></body>
 <div class="col-md-10 col-md-offset-1" style="margin-bottom: 20px;">
-<h1 style=" color: #428bca;">Calculadora Historica</h1>
+<h1 style=" color: #428bca;">Valores Históricos Chile</h1>
+<h3 style=" color: #428bca;">(UF, USD y Oro)</h3>
 <% if @w.present? %>
 	<div class="alert alert-warning" style=" margin-right: 700px;">
 	    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -106,7 +104,6 @@ $(document).ready(function() {
 				      			</div>
 				    		<% end %>
 				    	</div>
-					</div>
 				</div>
 			<% end %>
         </div>
@@ -116,20 +113,21 @@ $(document).ready(function() {
 </section>
 <div class="col-md-10 col-sm-14 col-md-offset-1">
 	<div style="overflow: auto; background-color: #ffffff;" class="panel panel-primary">
-	<div class="panel-heading">Inflación en el año <%= @y %></div>
-	<div align="right" style="margin-top: 30px; margin-right: 100px;">
-	  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
-	    <% if params[:quantity] && params[:start] && params[:target] %>
-	      <%= hidden_field_tag 'quantity', @q %>
-	      <%= hidden_field_tag 'start', @sd %>
-	      <%= hidden_field_tag 'target', @td %>
-	      <%= hidden_field_tag 'option', @o %>
-	    <% end %>
-	    <%= select_tag(:year, options_for_select(@dates_array, @y),class:"btn btn-primary dropdown-toggle") %>
-	    <%= submit_tag 'Mostrar año', name: nil, class: "btn btn-primary" %>
-	  <% end %>
+		<div class="panel-heading">Inflación en el año <%= @y %></div>
+		<div align="right" style="margin-top: 30px; margin-right: 100px;">
+		  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
+		    <% if params[:quantity] && params[:start] && params[:target] %>
+		      <%= hidden_field_tag 'quantity', @q %>
+		      <%= hidden_field_tag 'start', @sd %>
+		      <%= hidden_field_tag 'target', @td %>
+		      <%= hidden_field_tag 'option', @o %>
+		    <% end %>
+		    <%= select_tag(:year, options_for_select(@dates_array, @y),class:"btn btn-primary dropdown-toggle") %>
+		    <%= submit_tag 'Mostrar año', name: nil, class: "btn btn-primary" %>
+		  <% end %>
+		</div>
+		<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
 	</div>
-	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
 </div>
 
 
