@@ -30,19 +30,21 @@ $(document).ready(function() {
 
 </body>
 </head>
-<h1 style="margin-left: 70px; color: #428bca;">Calculadora Historica</h1>
+<div class="col-md-10 col-md-offset-1" style="margin-bottom: 20px;">
+<h1 style=" color: #428bca;">Calculadora Historica</h1>
 <% if @w.present? %>
-	<div class="alert alert-warning" style="margin-left: 70px; margin-right: 900px">
+	<div class="alert alert-warning" style=" margin-right: 700px;">
 	    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
 	    No se puede calcular el precio del oro despues del día 07-09-2018
 	</div>
 <% end %>
+</div>
 
 
-<section class="bg-grey-50 padding-top-60 padding-top-sm-30" style="margin-top: 30px">
+<section style="margin-top: 40px">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 col-sm-8 hidden-xs">
+      <div class="col-md-4 col-sm-8">
         <div class="widget">
           <div class="panel panel-primary">
             <div class="panel-heading">Calculadora</div>
@@ -54,9 +56,9 @@ $(document).ready(function() {
 					<div >
 						<label for="start" style="margin-left: 15px;">Cantidad: </label>
 						<% if @q %>
-							<input type="number" id="quantity" name="quantity" value="<%= @q %>" min="0" style="width: 100px;" required step="0.01" />
+							<input type="number" id="quantity" name="quantity" value="<%= @q %>" min="1" style="width: 100px;" required step="0.01" />
 						<% else %>
-							<input type="number" id="quantity" name="quantity"min="0" style="width: 100px;" required step="0.01"/>
+							<input type="number" id="quantity" name="quantity" min="1" style="width: 100px;" required step="0.01"/>
 						<% end %>
 						<%= select_tag(:option, options_for_select([['CLP', 1], ['UF', 2], ['USD', 3], ['Oro (gr)', 4]], @o),class:"btn btn-primary dropdown-toggle") %>
 					</div>
@@ -76,7 +78,7 @@ $(document).ready(function() {
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-sm-4 hidden-xs">
+      <div class="col-md-3 col-sm-6">
         <div class="widget">
         	<% if @target_clp && @ufs &&  @target_usd%>
 	            <div class="panel panel-primary">
@@ -112,7 +114,8 @@ $(document).ready(function() {
     </div>
   </div>
 </section>
-<div style="margin-top: 20px; margin-left: 70px; margin-right: 200px; overflow: hidden; background-color: #ffffff;" class="panel panel-primary">
+<div class="col-md-10 col-sm-14 col-md-offset-1">
+	<div style="overflow: hidden; background-color: #ffffff;" class="panel panel-primary">
 	<div class="panel-heading">Inflación en el año <%= @y %></div>
 	<div align="right" style="margin-top: 30px; margin-right: 100px;">
 	  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
@@ -127,8 +130,8 @@ $(document).ready(function() {
 	  <% end %>
 	</div>
 	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>
-	
 </div>
+
 
 
 
