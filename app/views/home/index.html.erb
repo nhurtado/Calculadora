@@ -26,64 +26,95 @@ $(document).ready(function() {
 });
 	
 </script>
-</head>
-<h1>Calculadora Historica</h1>
-<%= flash[:warning] || flash[:notice] || flash[:alert] %>
-<div style="margin-top: 30px; margin-left: 20px; margin-right: 400px; overflow: hidden; border-style: solid;
-    border-width: 2px; ">
-    <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
-    <% if params[:year] %>
-      <%= hidden_field_tag 'year', @y %>
-    <% end %>
-    <div style="margin-top: 10px; margin-left: 10px; margin-bottom: 10px; width: 200px; float:left;">
-        <label for="start">Cantidad</label>
-	<% if @q %>
-	  <input type="number" id="quantity" name="quantity" value="<%= @q %>"
-           min="0" style="width: 100px;" required step="0.01"/>
-	<% else %>
-	  <input type="number" id="quantity" name="quantity"
-           min="0" style="width: 100px;" required step="0.01"/>
-	<% end %>
-	<%= select_tag(:option, options_for_select([['CLP', 1], ['UF', 2], ['USD', 3], ['Oro (gr)', 4]], @o)) %>
-    </div>
-    <div style="margin-top: 10px; margin-bottom: 10px; width: 150px; float: left;">
-        <label for="start">Fecha Inicio</label>
-	<input type="date" id="start" name="start" value= "<%= @sd %>" min="1984-01-01" max="<%= @today %>" />
-    </div>
+<body style="background-color:#e6f2ff;">
 
-    <div style="margin-top: 10px; margin-bottom: 10px; width: 150px; float: left;">
-        <label for="target">Fecha Objetivo</label>
-	<input type="date" id="target" name="target" value="<%= @td %>" min="1984-01-01" max="<%= @today %>"/ >
+</body>
+</head>
+<h1 style="margin-left: 70px; color: #428bca;">Calculadora Historica</h1>
+<% if @w.present? %>
+	<div class="alert alert-warning" style="margin-left: 70px; margin-right: 900px">
+	    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+	    No se puede calcular el precio del oro despues del día 07-09-2018
+	</div>
+<% end %>
+
+
+<section class="bg-grey-50 padding-top-60 padding-top-sm-30" style="margin-top: 30px">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-sm-8 hidden-xs">
+        <div class="widget">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Calculadora</div>
+            <div class="panel-body">
+            	<%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
+					<% if params[:year] %>
+						<%= hidden_field_tag 'year', @y %>
+					<% end %>
+					<div >
+						<label for="start" style="margin-left: 15px;">Cantidad: </label>
+						<% if @q %>
+							<input type="number" id="quantity" name="quantity" value="<%= @q %>" min="0" style="width: 100px;" required step="0.01" />
+						<% else %>
+							<input type="number" id="quantity" name="quantity"min="0" style="width: 100px;" required step="0.01"/>
+						<% end %>
+						<%= select_tag(:option, options_for_select([['CLP', 1], ['UF', 2], ['USD', 3], ['Oro (gr)', 4]], @o),class:"btn btn-primary dropdown-toggle") %>
+					</div>
+					<div >
+						<label for="start" style="margin-right: 40px; margin-top: 10px; margin-left: 15px;">Fecha Inicio: </label>
+						<input type="date" id="start" name="start" value= "<%= @sd %>" min="1984-01-01" max="<%= @today %>" />
+					</div>
+					<div >
+						<label for="target" style="margin-right: 20px; margin-top: 10px; margin-left: 15px;">Fecha Objetivo:</label>
+						<input type="date" id="target" name="target" value="<%= @td %>" min="1984-01-01" max="<%= @today %>"/ >
+					</div>
+					<div align="right" style="margin-right: 20px; margin-top: 10px">
+						<%= submit_tag 'Calcular', name: nil , class: "btn btn-primary" %>
+					</div>
+			    <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4 hidden-xs">
+        <div class="widget">
+        	<% if @target_clp && @ufs &&  @target_usd%>
+	            <div class="panel panel-primary">
+	          	
+		            <div class="panel-heading">Resultados</div>
+		            	<div class="panel-body">
+					    	<% if @target_clp %>
+				      			<div style="margin-top: 10px">
+					  				<b>CLP:</b> <%= @target_clp %>
+				      			</div>
+				    		<% end %>
+			    			<% if @ufs %>
+			      				<div style="margin-top: 10px">
+				  					<b>UF:</b> <%= @ufs %>
+			      				</div>
+			    			<% end %>
+				    		<% if @target_usd %>
+				      			<div style="margin-top: 10px">
+					  				<b>USD:</b> <%= @target_usd %>
+				      			</div>
+				    		<% end %>
+				    		<% if @target_gold %>
+				      			<div style="margin-top: 10px">
+					  				<b>Oro(gr):</b> <%= @target_gold %>
+				      			</div>
+				    		<% end %>
+				    	</div>
+					</div>
+				</div>
+			<% end %>
+        </div>
+      </div>
     </div>
-    <div style="margin-top: 10px; margin-bottom: 10px; width: 100px; float: left;">
-	<label for="submit">_</label>
-    	<%= submit_tag 'Calcular', name: nil %>
-    </div>
-    <% end %>
-    <% if @target_clp %>
-      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
-	  <b>CLP</b> <%= @target_clp %>
-      </div>
-    <% end %>
-    <% if @ufs %>
-      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
-	  <b>UF</b> <%= @ufs %>
-      </div>
-    <% end %>
-    <% if @target_usd %>
-      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
-	  <b>USD</b> <%= @target_usd %>
-      </div>
-    <% end %>
-    <% if @target_gold %>
-      <div style="margin-top: 10px; margin-bottom: 10px; width: 200px; float: left;">
-	  <b>Oro (gr)</b> <%= @target_gold %>
-      </div>
-    <% end %>
-</div>
-<div style="margin-top: 30px; margin-left: 20px; margin-right: 200px; overflow: hidden; border-style: solid;
-    border-width: 2px;">
-	<div align="right" style="margin-top: 30px;">
+  </div>
+</section>
+<div style="margin-top: 20px; margin-left: 70px; margin-right: 200px; overflow: hidden; background-color: #ffffff;" class="panel panel-primary">
+	<div class="panel-heading">Inflación en el año <%= @y %></div>
+	<div align="right" style="margin-top: 30px; margin-right: 100px;">
 	  <%= form_tag(home_index_path, method: :get, enforce_utf8: false) do %>
 	    <% if params[:quantity] && params[:start] && params[:target] %>
 	      <%= hidden_field_tag 'quantity', @q %>
@@ -91,8 +122,8 @@ $(document).ready(function() {
 	      <%= hidden_field_tag 'target', @td %>
 	      <%= hidden_field_tag 'option', @o %>
 	    <% end %>
-	    <%= select_tag(:year, options_for_select(@dates_array, @y)) %>
-	    <%= submit_tag 'Mostrar año', name: nil %>
+	    <%= select_tag(:year, options_for_select(@dates_array, @y),class:"btn btn-primary dropdown-toggle") %>
+	    <%= submit_tag 'Mostrar año', name: nil, class: "btn btn-primary" %>
 	  <% end %>
 	</div>
 	<div id="myfirstchart" style="height: 400px; width:1200px;"></div>

@@ -14,50 +14,46 @@ class HomeController < ApplicationController
       @o = params[:option].to_i
       if @sd <= @today && @td <=@today
         dv_start = DateValue.where("date_v = ?", @sd).first
-	dv_target = DateValue.where("date_v = ?", @td).first
-	if dv_start.gold.present? && dv_target.gold.present?
-	  puts "1"
-	  @ufs = get_ufs(dv_start,@o,@q)
-	  @target_clp = (@ufs*dv_target.uf).round(2)
-	  @target_usd = (@target_clp/dv_target.usd).round(2)
-	  @target_gold = (@target_clp/dv_target.gold).round(4)
-	elsif dv_start.gold.present?
-	  puts "2"
-	  @ufs = get_ufs(dv_start,@o,@q)
-	  @target_clp = (@ufs*dv_target.uf).round(2)
-	  @target_usd = (@target_clp/dv_target.usd).round(2)
-	  #Warning no starting gold, can't calculate from
-	elsif dv_target.gold.present?
-	  puts "3"
-	  if @o == 4
-	    puts "error"
-	  else
-	    @ufs = get_ufs(dv_start,@o,@q)
-	    @target_clp = (@ufs*dv_target.uf).round(2)
-	    @target_usd = (@target_clp/dv_target.usd).round(2)
-	    @target_gold = (@target_clp/dv_target.gold).round(4)
-	  end
-	  #Warning no target gold, can't calculate to
-	else
-	  puts "4"
-	  if @o == 4
-	    puts "error"
-	  else
-	    @ufs = get_ufs(dv_start,@o,@q)
-	    @target_clp = (@ufs*dv_target.uf).round(2)
-	    @target_usd = (@target_clp/dv_target.usd).round(2)
-	  end
-	  #Warning no starting or target gold, can't calculate golds
-	end
+	      dv_target = DateValue.where("date_v = ?", @td).first
+	      if dv_start.gold.present? && dv_target.gold.present?
+      	  @ufs = get_ufs(dv_start,@o,@q)
+      	  @target_clp = (@ufs*dv_target.uf).round(2)
+      	  @target_usd = (@target_clp/dv_target.usd).round(2)
+      	  @target_gold = (@target_clp/dv_target.gold).round(4)
+	      elsif dv_start.gold.present?
+      	  @ufs = get_ufs(dv_start,@o,@q)
+      	  @target_clp = (@ufs*dv_target.uf).round(2)
+      	  @target_usd = (@target_clp/dv_target.usd).round(2)
+          @w = true
+      	  #Warning no starting gold, can't calculate from
+	      elsif dv_target.gold.present?
+      	  if @o != 4
+      	    @ufs = get_ufs(dv_start,@o,@q)
+      	    @target_clp = (@ufs*dv_target.uf).round(2)
+      	    @target_usd = (@target_clp/dv_target.usd).round(2)
+      	    @target_gold = (@target_clp/dv_target.gold).round(4)
+      	  end
+          @w = true
+	        #Warning no target gold, can't calculate to
+	      else
+      	  if @o != 4
+      	    @ufs = get_ufs(dv_start,@o,@q)
+      	    @target_clp = (@ufs*dv_target.uf).round(2)
+      	    @target_usd = (@target_clp/dv_target.usd).round(2)
+      	  end
+          @w = true
+      	  #Warning no starting or target gold, can't calculate golds
+	      end
       end
     end
     if params[:year].present?
       @y = params[:year]
     end
     if @ufs
-	@ufs = @ufs.round(4)
+	    @ufs = @ufs.round(4)
     end
     @uf_values = DateValue.where('extract(year from date_v) = ?', @y).to_json
+    puts @w
   end
 
   protected
